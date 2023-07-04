@@ -17,7 +17,7 @@ public:
   // for doubly linked list
   
   Node * get_prev();
-  void set_prev(Node* t);
+  void set_prev(Node* f);
   
 };
 
@@ -36,7 +36,7 @@ NodePtr Node::get_next() { return nextPtr; }
 int Node::get_data() { return value; }
 
 void Node::set_next(NodePtr t) {
-  this->nextPtr = t; 
+nextPtr = t; 
 }
 
 void Node::print(){
@@ -45,6 +45,6 @@ void Node::print(){
 
 NodePtr Node::get_prev() { return pPtr;}
 
-void Node::set_prev(NodePtr t) {
-  this->pPtr=t; 
+void Node::set_prev(NodePtr f) {
+pPtr = f; 
 }

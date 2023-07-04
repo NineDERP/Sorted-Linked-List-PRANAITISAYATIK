@@ -4,7 +4,6 @@ class LL {
   NodePtr hol; // head of linked list
   int size;
 
-
 public:
   LL();
   int deletes(int value);
@@ -20,7 +19,7 @@ public:
 };
 
 LL::LL() {
-  this->hol = NULL;
+  hol = NULL;
   size = 0;
 }
 
@@ -34,14 +33,6 @@ LL::~LL() {
     delete t;
     t = hol;
   }
-  
-  for (i = 0; i < size; i++) {
-    hol = hol->get_prev();
-    delete t;
-    t = hol;
-  }
-  
-  
 }
 
 // insert a new value into the list in sorted order
@@ -67,16 +58,18 @@ void LL::insert(int value) {
     if (previousPtr == NULL) {
         newPtr->set_next(hol);
         hol = newPtr;
+
+      if(currentPtr) currentPtr->set_prev(newPtr);
+      
       }  // end if
     else { 
       // insert new node between previousPtr and currentPtr
       previousPtr->set_next(newPtr);
-      newPtr->set_prev(previousPtr);
-      
       newPtr->set_next(currentPtr);
-      if(currentPtr !=NULL)
-        currentPtr->set_prev(newPtr);
       
+      if(currentPtr)
+        currentPtr->set_prev(newPtr);
+        newPtr->set_prev(previousPtr);
     } // end else
     ++size;
   } // end if
@@ -99,6 +92,8 @@ int LL::deletes(int value) {
 
     delete tempPtr; // free the de-threaded node
 
+    if (hol)
+      hol->set_prev(NULL);
     return value;
   } // end if
   else {
@@ -109,8 +104,6 @@ int LL::deletes(int value) {
     while (currentPtr != NULL && currentPtr->get_data() != value) {
       previousPtr = currentPtr;            // walk to ...
       currentPtr = currentPtr->get_next(); // ... next node
-      if (currentPtr == hol)
-        currentPtr = NULL;
     } // end while
 
     // delete node makeat currentPtr
@@ -118,7 +111,8 @@ int LL::deletes(int value) {
       tempPtr = currentPtr;
       previousPtr->set_next(currentPtr->get_next());
       currentPtr = currentPtr->get_next();
-    
+      if(currentPtr)
+        currentPtr->set_prev(previousPtr);
       delete tempPtr;
       size--;
       return value;
@@ -155,19 +149,23 @@ void LL::printList() {
 } // end function printList
 
 void LL::printListR() {
-  NodePtr currentPtr = hol;
-if(isEmpty())
-{
-  cout<<"List is empty"<<endl;
-}else{ cout << "The reverse list is:" << endl;
-    cout<<"NULL ";
+  
+  // if list is empty
+  if (size == 0) {
+    cout << "List is empty." << endl;
+  } // end if
+  else {
+    NodePtr currentPtr = hol;
     int i;
+    for(i=0;i<size-1;i++)
+      currentPtr = currentPtr->get_next();
+    
     for (i = 0; i < size; i++) {
-      cout << "<-  ";
       currentPtr->print();
+      cout << "  ->";
       currentPtr = currentPtr->get_prev();
     } // end while
-    cout<<endl;
-
-}
+  puts("NULL\n");
+    
+  } // end else
 }
